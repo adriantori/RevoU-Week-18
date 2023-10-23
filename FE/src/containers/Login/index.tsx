@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,20 +10,27 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const Login: React.FC = () => {
+  const [errors, setErrors] = useState({ username: false, password: false });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
+    const username = data.get('username');
+    const password = data.get('password');
+
+    setErrors({
+      username: !username,
+      password: !password,
     });
+
+    if (username && password) {
+      // Form submission logic here
+      console.log({ username, password });
+    }
   };
 
   return (
@@ -52,6 +61,8 @@ const Login: React.FC = () => {
               name="username"
               autoComplete="username"
               autoFocus
+              error={errors.username}
+              helperText={errors.username ? "Username must be filled" : ""}
             />
             <TextField
               margin="normal"
@@ -62,6 +73,8 @@ const Login: React.FC = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={errors.password}
+              helperText={errors.password ? "Password must be filled" : ""}
             />
             <Button
               type="submit"
