@@ -1,0 +1,25 @@
+import { NotificationProvider, useNotification } from './contexts/NotificationContext';
+
+function NotificationButton() {
+  const showNotification = useNotification();
+
+  const handleButtonClick = () => {
+    showNotification('success', 'login success', 'user successfully logged in');
+  }
+
+  return (
+    <button onClick={handleButtonClick}>Show Notification</button>
+  );
+}
+
+function App() {
+  return (
+    <NotificationProvider>
+      <div>
+        <NotificationButton />
+      </div>
+    </NotificationProvider>
+  );
+}
+
+export default App;

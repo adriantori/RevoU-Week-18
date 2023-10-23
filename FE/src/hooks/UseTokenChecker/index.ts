@@ -1,17 +1,19 @@
 // useTokenChecker.js
 import { useCallback, useEffect } from 'react';
-import { Notification } from '../components'
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../../contexts/NotificationContext';
+
 
 const useTokenChecker = (token: string | null) => {
-    const navigate = useNavigate();
+  const showNotification = useNotification();
+  const navigate = useNavigate();
 
   const checkToken = useCallback(() => {
     if (!token) {
-      Notification('warning', 'Unauthorized', 'Login first m8');
+      showNotification('warning', 'Unauthorized', 'Login first m8');
       navigate('/login');
     }
-  }, [token, navigate]);
+  }, [token, showNotification, navigate]);
 
   useEffect(() => {
     checkToken();

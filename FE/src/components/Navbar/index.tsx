@@ -24,7 +24,7 @@ const items = [
 const Navbar: React.FC = () => {
   return (
     <AppBar position="static">
-      <Toolbar style={{ justifyContent: 'center' }}>
+      <Toolbar style={{ justifyContent: 'space-between' }}>
         {items.map((item) => (
           <div key={item.label} style={{ display: 'flex', alignItems: 'center' }}>
             {item.icon}

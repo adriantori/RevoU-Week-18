@@ -1,19 +1,29 @@
-import { NotificationProvider, useNotification } from './contexts/NotificationContext';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { PublicLayout } from './layouts'
+import { NotificationProvider } from './contexts/NotificationContext'
+import AppProvider from './contexts/AppProvider'
+import { LoginPage } from './pages'
 
 function App() {
-  const showNotification = useNotification();
-
-  const handleButtonClick = () => {
-    showNotification('success', 'login success', 'user successfully logged in');
-  }
+  const router = createBrowserRouter([
+    {
+      element: <PublicLayout />,
+      children: [
+        {
+          path: '/login',
+          element: <LoginPage />
+        }
+      ]
+    }
+  ])
 
   return (
-    <NotificationProvider>
-      <div>
-        <button onClick={handleButtonClick}>Show Notification</button>
-      </div>
-    </NotificationProvider>
-  );
+      <NotificationProvider>
+        <AppProvider>
+        <RouterProvider router={router} />
+        </AppProvider>
+      </NotificationProvider> 
+  )
 }
 
-export default App;
+export default App

@@ -1,1 +1,1 @@
-export { default as useTokenChecker } from './useTokenChecker'
+export { default as useTokenChecker } from './UseTokenChecker'
