@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTodo = exports.updateTodo = exports.getUserIdByTodo = exports.getUserTodoList = exports.getTodos = exports.createTask = void 0;
 const todoModel_1 = __importDefault(require("../models/todoModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
-function createTask(todoTask, todoPriority, todoDue, userId) {
+function createTask(todoTask, todoPriority, todoDue, todoAmount, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const todo = yield todoModel_1.default.create({
                 todos_task: todoTask,
                 todos_priority: todoPriority,
                 todos_due: todoDue,
+                todos_amount: todoAmount,
                 users_id: userId
             });
             return todo;
@@ -40,7 +41,7 @@ function getTodos() {
                 where: {
                     is_deleted: 0,
                 },
-                attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'users_id'],
+                attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'todos_amount', 'users_id'],
                 include: [
                     {
                         model: userModel_1.default,
@@ -54,6 +55,7 @@ function getTodos() {
                 todos_task: todo.todos_task,
                 todos_priority: todo.todos_priority,
                 todos_due: todo.todos_due,
+                todos_amount: todo.todos_amount,
                 users_id: todo.users_id,
                 users_name: todo.user.users_name,
             }));
@@ -72,7 +74,7 @@ function getUserTodoList(username) {
                 where: {
                     is_deleted: 0,
                 },
-                attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'users_id'],
+                attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'todos_amount', 'users_id'],
                 include: [
                     {
                         model: userModel_1.default,
@@ -89,6 +91,7 @@ function getUserTodoList(username) {
                 todos_task: todo.todos_task,
                 todos_priority: todo.todos_priority,
                 todos_due: todo.todos_due,
+                todos_amount: todo.todos_amount,
                 users_id: todo.users_id,
                 users_name: todo.user.users_name,
             }));
@@ -117,13 +120,14 @@ function getUserIdByTodo(todoId) {
     });
 }
 exports.getUserIdByTodo = getUserIdByTodo;
-function updateTodo(todos_task, todos_priority, todos_due, userId, todoId) {
+function updateTodo(todoTask, todoPriority, todoDue, todoAmount, todoId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const updatedTodos = yield todoModel_1.default.update({
-                todos_task: todos_task,
-                todos_priority: todos_priority,
-                todos_due: todos_due,
+                todos_task: todoTask,
+                todos_priority: todoPriority,
+                todos_due: todoDue,
+                todos_amount: todoAmount
             }, {
                 where: {
                     todos_id: todoId

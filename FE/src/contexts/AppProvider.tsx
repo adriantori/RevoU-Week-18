@@ -5,6 +5,7 @@ interface CategoryData {
     id: string;
     task: string;
     priority: string;
+    amount: number;
     due: Date;
 }
 

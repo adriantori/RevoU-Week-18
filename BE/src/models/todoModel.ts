@@ -7,6 +7,7 @@ class Todo extends Model {
     public todos_task!: string;
     public todos_priority!: string;
     public todos_due!: Date;
+    public todos_amount!: number;
     public users_id!: number;
     public is_deleted!: boolean;
     user: any;
@@ -29,6 +30,10 @@ Todo.init(
         },
         todos_due: {
             type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        todos_amount: {
+            type: DataTypes.NUMBER,
             allowNull: false,
         },
         users_id: {

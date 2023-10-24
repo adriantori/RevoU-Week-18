@@ -10,7 +10,7 @@ const useTokenChecker = (token: string | null) => {
 
   const checkToken = useCallback(() => {
     if (!token) {
-      showNotification('warning', 'Unauthorized', 'Login first m8');
+      showNotification('warning', 'Unauthorized', 'Lu debt collector mana bro?');
       navigate('/login');
     }
   }, [token, showNotification, navigate]);

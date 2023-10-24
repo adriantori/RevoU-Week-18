@@ -26,6 +26,10 @@ Todo.init({
         type: sequelize_1.DataTypes.DATEONLY,
         allowNull: false,
     },
+    todos_amount: {
+        type: sequelize_1.DataTypes.NUMBER,
+        allowNull: false,
+    },
     users_id: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,

@@ -1,12 +1,15 @@
+import dayjs from 'dayjs'
+
 import Todo from "../models/todoModel";
 import User from "../models/userModel";
 
-async function createTask(todoTask: string, todoPriority: string, todoDue: string, userId: number): Promise<any> {
+async function createTask(todoTask: string, todoPriority: string, todoDue: string, todoAmount:number, userId: number): Promise<any> {
     try {
         const todo = await Todo.create({
             todos_task: todoTask,
             todos_priority: todoPriority,
             todos_due: todoDue,
+            todos_amount: todoAmount,
             users_id: userId
         });
 
@@ -23,7 +26,7 @@ async function getTodos(): Promise<any> {
             where: {
                 is_deleted: 0,
             },
-            attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'users_id'],
+            attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'todos_amount', 'users_id'],
             include: [
                 {
                     model: User,
@@ -37,7 +40,8 @@ async function getTodos(): Promise<any> {
             todos_id: todo.todos_id,
             todos_task: todo.todos_task,
             todos_priority: todo.todos_priority,
-            todos_due: todo.todos_due,
+            todos_due: dayjs(todo.todos_due).format('DD/MM/YYYY'),            
+            todos_amount: todo.todos_amount,
             users_id: todo.users_id,
             users_name: todo.user.users_name,
         }));
@@ -53,7 +57,7 @@ async function getUserTodoList(username: string): Promise<any> {
             where: {
                 is_deleted: 0,
             },
-            attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'users_id'],
+            attributes: ['todos_id', 'todos_task', 'todos_priority', 'todos_due', 'todos_amount', 'users_id'],
             include: [
                 {
                     model: User,
@@ -70,7 +74,8 @@ async function getUserTodoList(username: string): Promise<any> {
             todos_id: todo.todos_id,
             todos_task: todo.todos_task,
             todos_priority: todo.todos_priority,
-            todos_due: todo.todos_due,
+            todos_due: dayjs(todo.todos_due).format('DD/MM/YYYY'), 
+            todos_amount: todo.todos_amount,
             users_id: todo.users_id,
             users_name: todo.user.users_name,
         }));
@@ -96,13 +101,14 @@ async function getUserIdByTodo(todoId: number): Promise<any> {
       }
 }
 
-async function updateTodo(todos_task: string, todos_priority: string, todos_due: Date, userId: number, todoId: number): Promise<any> {
+async function updateTodo(todoTask: string, todoPriority: string, todoDue: string, todoAmount:number, todoId: number): Promise<any> {
     try {
         const updatedTodos = await Todo.update(
             {
-                todos_task: todos_task,
-                todos_priority: todos_priority,
-                todos_due: todos_due,
+                todos_task: todoTask,
+                todos_priority: todoPriority,
+                todos_due: todoDue,
+                todos_amount: todoAmount
             },
             {
                 where: {

@@ -3,20 +3,15 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import HighlightIcon from '@mui/icons-material/Highlight';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 
 const items = [
   {
-    label: 'Fullstack ToDo list application',
+    label: 'DanaHaram',
     icon: <AddBoxIcon />,
   },
   {
-    label: 'Adri Antori',
-    icon: <HighlightIcon />,
-  },
-  {
-    label: 'Milestone 3',
+    label: 'Bayar sekarang, or else.',
     icon: <ScheduleIcon />,
   },
 ];
@@ -24,7 +19,7 @@ const items = [
 const Navbar: React.FC = () => {
   return (
     <AppBar position="static">
-      <Toolbar style={{ justifyContent: 'space-between' }}>
+      <Toolbar style={{ justifyContent: 'space-evenly' }}>
         {items.map((item) => (
           <div key={item.label} style={{ display: 'flex', alignItems: 'center' }}>
             {item.icon}

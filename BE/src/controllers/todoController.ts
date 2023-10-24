@@ -6,7 +6,7 @@ import { createTodoService, deleteTodoService, getTodoService, getUserIdByTodoId
 
 async function createTodoController(req: Request, res: Response) {
     try {
-        const { todoTask, todoPriority, todoDue } = req.body;
+        const { todoTask, todoPriority, todoDue, todoAmount } = req.body;
         const authHeader = req.headers['authorization'];
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -19,7 +19,7 @@ async function createTodoController(req: Request, res: Response) {
 
         const userId = decodedToken.userId;
 
-        const post = await createTodoService(todoTask, todoPriority, todoDue, userId);
+        const post = await createTodoService(todoTask, todoPriority, todoDue, todoAmount, userId);
         res.status(201).json({
             message: 'Posted successfully',
             data: post,
@@ -79,7 +79,7 @@ async function updateTodoController(req: Request, res: Response) {
     try {
         const tmpTaskId = req.params.id;
         const todoId = parseInt(tmpTaskId);
-        const { todoTask, todoPriority, todoDue } = req.body;
+        const { todoTask, todoPriority, todoDue, todoAmount } = req.body;
 
         const authHeader = req.headers['authorization'];
 
@@ -105,7 +105,7 @@ async function updateTodoController(req: Request, res: Response) {
             return res.status(403).json({ message: 'You are not authorized to edit this post' });
         }
 
-        const todo = await updateTodoService(todoTask, todoPriority, todoDue, userId, todoId);
+        const todo = await updateTodoService(todoTask, todoPriority, todoDue, todoAmount, todoId);
         res.status(200).json({
             message: 'ToDos updated successfully',
             data: todo,

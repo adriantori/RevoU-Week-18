@@ -19,7 +19,7 @@ const todoService_1 = require("../services/todoService");
 function createTodoController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { todoTask, todoPriority, todoDue } = req.body;
+            const { todoTask, todoPriority, todoDue, todoAmount } = req.body;
             const authHeader = req.headers['authorization'];
             if (!authHeader || !authHeader.startsWith('Bearer ')) {
                 res.status(401).json({ message: 'Unauthorized - Token not provided' });
@@ -28,7 +28,7 @@ function createTodoController(req, res) {
             const token = authHeader.slice(7); // Remove 'Bearer ' prefix
             const decodedToken = jsonwebtoken_1.default.verify(token, constants_1.JWT_SIGN);
             const userId = decodedToken.userId;
-            const post = yield (0, todoService_1.createTodoService)(todoTask, todoPriority, todoDue, userId);
+            const post = yield (0, todoService_1.createTodoService)(todoTask, todoPriority, todoDue, todoAmount, userId);
             res.status(201).json({
                 message: 'Posted successfully',
                 data: post,
@@ -90,7 +90,7 @@ function updateTodoController(req, res) {
         try {
             const tmpTaskId = req.params.id;
             const todoId = parseInt(tmpTaskId);
-            const { todoTask, todoPriority, todoDue } = req.body;
+            const { todoTask, todoPriority, todoDue, todoAmount } = req.body;
             const authHeader = req.headers['authorization'];
             if (!authHeader || !authHeader.startsWith('Bearer ')) {
                 res.status(401).json({ message: 'Unauthorized - Token not provided' });
@@ -108,7 +108,7 @@ function updateTodoController(req, res) {
             if (userIdRetrieved !== userId) {
                 return res.status(403).json({ message: 'You are not authorized to edit this post' });
             }
-            const todo = yield (0, todoService_1.updateTodoService)(todoTask, todoPriority, todoDue, userId, todoId);
+            const todo = yield (0, todoService_1.updateTodoService)(todoTask, todoPriority, todoDue, todoAmount, todoId);
             res.status(200).json({
                 message: 'ToDos updated successfully',
                 data: todo,

@@ -11,14 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTodoService = exports.updateTodoService = exports.getUserIdByTodoIdService = exports.getUserTodoListService = exports.getTodoService = exports.createTodoService = void 0;
 const todoDao_1 = require("../dao/todoDao");
-function createTodoService(todoTask, todoPriority, todoDue, userId) {
+function createTodoService(todoTask, todoPriority, todoDue, todoAmount, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const post = yield (0, todoDao_1.createTask)(todoTask, todoPriority, todoDue, userId);
+            const post = yield (0, todoDao_1.createTask)(todoTask, todoPriority, todoDue, todoAmount, userId);
             return post;
         }
         catch (error) {
-            throw new Error('Error registering user service: ' + error.message);
+            throw new Error('Error registering ToDo service: ' + error.message);
         }
     });
 }
@@ -30,7 +30,7 @@ function getTodoService() {
             return post;
         }
         catch (error) {
-            throw new Error('Error registering user service: ' + error.message);
+            throw new Error('Error get ToDo service all: ' + error.message);
         }
     });
 }
@@ -42,7 +42,7 @@ function getUserTodoListService(username) {
             return post;
         }
         catch (error) {
-            throw new Error('Error registering user service: ' + error.message);
+            throw new Error('Error get ToDo service: ' + error.message);
         }
     });
 }
@@ -54,19 +54,19 @@ function getUserIdByTodoIdService(postId) {
             return userId;
         }
         catch (error) {
-            throw new Error('Error getting user id by post id service: ' + error.message);
+            throw new Error('Error getting ToDo id by post id service: ' + error.message);
         }
     });
 }
 exports.getUserIdByTodoIdService = getUserIdByTodoIdService;
-function updateTodoService(todos_task, todos_priority, todos_due, userId, todoId) {
+function updateTodoService(todoTask, todoPriority, todoDue, todoAmount, todoId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const todo = yield (0, todoDao_1.updateTodo)(todos_task, todos_priority, todos_due, userId, todoId);
+            const todo = yield (0, todoDao_1.updateTodo)(todoTask, todoPriority, todoDue, todoAmount, todoId);
             return todo;
         }
         catch (error) {
-            throw new Error('Error registering user service: ' + error.message);
+            throw new Error('Error updating ToDo service: ' + error.message);
         }
     });
 }
@@ -78,7 +78,7 @@ function deleteTodoService(post_id) {
             return todo;
         }
         catch (error) {
-            throw new Error('Error registering user service: ' + error.message);
+            throw new Error('Error delete ToDo service: ' + error.message);
         }
     });
 }

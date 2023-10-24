@@ -7,7 +7,7 @@ const Footer = () => {
     <AppBar position="static" style={{ position: 'fixed', bottom: 0 }}>
       <Toolbar style={{ justifyContent: 'center' }}>
         <Typography variant="body2" color="textDark">
-          Adri Antori ©2023 Created for RevoU Week 18 - Milestone 3
+          Adri Antori ©2023 Created for RevoU Week 18 - Milestone 3 - Just a joke app, hopefully.
         </Typography>
       </Toolbar>
     </AppBar>

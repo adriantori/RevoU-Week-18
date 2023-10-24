@@ -51,7 +51,7 @@ const Login: React.FC = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, height: '65vh' }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, height: '50vh' }}>
             <TextField
               margin="normal"
               required
