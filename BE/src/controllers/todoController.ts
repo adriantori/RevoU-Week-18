@@ -79,9 +79,12 @@ async function updateTodoController(req: Request, res: Response) {
     try {
         const tmpTaskId = req.params.id;
         const todoId = parseInt(tmpTaskId);
+        console.log(todoId)
         const { todoTask, todoPriority, todoDue, todoAmount } = req.body;
+        console.log(req.body)
 
         const authHeader = req.headers['authorization'];
+        console.log(authHeader)
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             res.status(401).json({ message: 'Unauthorized - Token not provided' });
@@ -90,7 +93,7 @@ async function updateTodoController(req: Request, res: Response) {
 
         const token = authHeader.slice(7); // Remove 'Bearer ' prefix
         const decodedToken: jwt.JwtPayload = jwt.verify(token, JWT_SIGN!) as jwt.JwtPayload;
-
+        console.log(decodedToken)
         const userId = decodedToken.userId
 
         // Retrieve post information, including the user ID of the post maker

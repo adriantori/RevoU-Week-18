@@ -4,7 +4,7 @@ import { NotificationProvider } from './contexts/NotificationContext';
 import AppProvider from './contexts/AppProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { MainPage, LoginPage } from './pages';
+import { MainPage, LoginPage, RegisterPage, AddPage, EditPage } from './pages';
 
 function App() {
   const router = createBrowserRouter([
@@ -18,6 +18,18 @@ function App() {
         {
           path: '/login',
           element: <LoginPage />
+        },
+        {
+          path: '/register',
+          element: <RegisterPage />
+        },
+        {
+          path: '/add',
+          element: <AddPage />
+        },
+        {
+          path: '/edit/:id',
+          element: <EditPage />
         }
       ]
     }

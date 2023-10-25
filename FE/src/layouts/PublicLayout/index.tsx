@@ -8,7 +8,7 @@ const PublicLayout = () => {
       <CssBaseline />
       <Navbar />
       <Container style={{ flex: 1 }}>
-        <Paper elevation={3}>
+        <Paper elevation={3} style={{ marginTop: '32px'}}>
           <Outlet />
         </Paper>
       </Container>

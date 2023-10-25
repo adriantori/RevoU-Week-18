@@ -8,8 +8,8 @@ export const todoRoute = Router();
 
 todoRoute.options('/create', cors(whitelist.clientOptionsGlobal));
 todoRoute.options('/retrieve', cors(whitelist.clientOptionsGlobal));
-todoRoute.options('/update', cors(whitelist.clientOptionsGlobal));
-todoRoute.options('/delete', cors(whitelist.clientOptionsGlobal));
+todoRoute.options('/update/:id', cors(whitelist.clientOptionsGlobal));
+todoRoute.options('/delete/:id', cors(whitelist.clientOptionsGlobal));
 
 todoRoute.post('/create', cors(whitelist.clientOptionsGlobal), createTodoController);
 todoRoute.get('/retrieve', cors(whitelist.clientOptionsGlobal), getTodoController);

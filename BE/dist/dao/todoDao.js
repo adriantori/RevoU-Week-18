@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTodo = exports.updateTodo = exports.getUserIdByTodo = exports.getUserTodoList = exports.getTodos = exports.createTask = void 0;
+const dayjs_1 = __importDefault(require("dayjs"));
 const todoModel_1 = __importDefault(require("../models/todoModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 function createTask(todoTask, todoPriority, todoDue, todoAmount, userId) {
@@ -54,7 +55,7 @@ function getTodos() {
                 todos_id: todo.todos_id,
                 todos_task: todo.todos_task,
                 todos_priority: todo.todos_priority,
-                todos_due: todo.todos_due,
+                todos_due: (0, dayjs_1.default)(todo.todos_due).format('DD/MM/YYYY'),
                 todos_amount: todo.todos_amount,
                 users_id: todo.users_id,
                 users_name: todo.user.users_name,
@@ -90,7 +91,7 @@ function getUserTodoList(username) {
                 todos_id: todo.todos_id,
                 todos_task: todo.todos_task,
                 todos_priority: todo.todos_priority,
-                todos_due: todo.todos_due,
+                todos_due: (0, dayjs_1.default)(todo.todos_due).format('DD/MM/YYYY'),
                 todos_amount: todo.todos_amount,
                 users_id: todo.users_id,
                 users_name: todo.user.users_name,

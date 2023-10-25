@@ -7,10 +7,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
 
+import { useCallback, useContext, useEffect } from 'react';
+
+import { AppContext } from '../../contexts/AppProvider';
+import { useTokenChecker } from '../../hooks';
+import { BASE_URL } from '../../configs/Constants';
+import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../../contexts/NotificationContext';
 
 interface Column {
-  id: 'name' | 'task' | 'priority' | 'amount' | 'due';
+  id: 'name' | 'task' | 'priority' | 'amount' | 'due' | 'actions';
   label: string;
   minWidth?: number;
   formatNumber?: (value: number) => string;
@@ -18,8 +29,8 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'task', label: 'Task', minWidth: 100 },
-  { id: 'priority', label: 'Priority', minWidth: 170 },
+  { id: 'task', label: 'Task', minWidth: 170 },
+  { id: 'priority', label: 'Priority', minWidth: 100 },
   {
     id: 'amount',
     label: 'Amount',
@@ -31,9 +42,29 @@ const columns: readonly Column[] = [
     label: 'Due',
     minWidth: 170,
   },
+  {
+    id: 'actions',
+    label: 'Actions',
+    minWidth: 170
+  }
 ];
 
 interface Data {
+  key: number;
+  todos_id: number;
+  users_name: string;
+  todos_task: string;
+  todos_priority: string;
+  todos_amount: number;
+  todos_due: string;
+}
+
+interface getDataResponse {
+  data: Data[]
+}
+
+interface DataSubset {
+  id: number;
   name: string;
   task: string;
   priority: string;
@@ -41,19 +72,40 @@ interface Data {
   due: string;
 }
 
-function createData(
-  name: string,
-  task: string,
-  priority: string,
-  amount: number,
-  due: string
-): Data {
-  return { name, task, priority, amount, due };
+interface CategoryData {
+  key: number;
+  id: number;
+  name: string;
+  task: string;
+  priority: string;
+  amount: number;
+  due: string;
 }
 
-export default function StickyHeadTable() {
+
+function createData(data: CategoryData): DataSubset {
+
+  return {
+    id: data?.id,
+    name: data?.name,
+    task: data?.task,
+    priority: data?.priority,
+    amount: data?.amount,
+    due: data?.due,
+  };
+}
+
+const Main: React.FC = () => {
+  const { categories, setCategories } = useContext(AppContext);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  useTokenChecker(token)
+  const showNotification = useNotification();
+
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -64,21 +116,98 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-  const rows = [
-    createData('Budi', 'Penagihan Toni', "low", 100000, '2023-10-22')
-  ]
+  const getCategoryList = useCallback(
+    async () => {
+      const fetching = await fetch(BASE_URL + '/retrieve', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      const response: getDataResponse = await fetching.json();
+
+      const categorizedData = response.data ? response.data.map(data => ({
+        ...data,
+        key: data.todos_id
+      })) : [];
+
+      const transformedData = categorizedData.map((data, index) => ({
+        key: index,
+        id: data.todos_id,
+        name: data.users_name,
+        task: data.todos_task,
+        priority: data.todos_priority,
+        amount: data.todos_amount,
+        due: data.todos_due,
+      }));
+
+      setCategories(transformedData ?? []);
+    },
+    [setCategories, token]
+  )
+
+  useEffect(
+    () => {
+      getCategoryList()
+    },
+    [getCategoryList]
+  )
+
+  const handleEditClick = (taskId: number) => {
+    navigate(`/edit/${taskId}`)
+    // Perform your edit action here
+    // You can use setLoading(false) after the edit is complete
+  };
+
+  const handleDeleteClick = async (taskId: number) => {
+    try {
+      const fetching = await fetch(BASE_URL + '/delete/' + taskId, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!fetching.ok) {
+        throw new Error('Error deleting category');
+      }
+
+      showNotification('success', 'Task Deleted', 'Task deleted successfully');
+
+      getCategoryList();
+    } catch (error) {
+      showNotification('error', 'Task Not Deleted', 'Task failed to be deleted');
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    navigate('/');
+  }
+
+  const rows = categories.map((data) => createData(data));
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => navigate('/add')}
+      >
+        Add New Item
+      </Button>
+      <Button
+        variant="contained"
+        color="error"
+        onClick={() => logout()}
+      >
+        Logout
+      </Button>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  style={{ minWidth: column.minWidth }}
-                >
+                <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
                   {column.label}
                 </TableCell>
               ))}
@@ -87,22 +216,43 @@ export default function StickyHeadTable() {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row: DataSubset) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id}>
-                          { value }
-                        </TableCell>
-                      );
-                    })}
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    {columns.map((column) => (
+                      <TableCell key={column.id}>
+                        {column.id === 'actions' ? (
+                          <div>
+                            <IconButton onClick={() => handleEditClick(row.id)}>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={() => handleDeleteClick(row.id)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
+                        ) : (
+                          // Render the cell value based on the column.id
+                          column.id === 'name'
+                            ? row.name
+                            : column.id === 'task'
+                              ? row.task
+                              : column.id === 'priority'
+                                ? row.priority
+                                : column.id === 'amount'
+                                  ? row.amount
+                                  : column.id === 'due'
+                                    ? row.due
+                                    : ''
+                        )}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 );
               })}
           </TableBody>
+
         </Table>
+
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
@@ -116,3 +266,5 @@ export default function StickyHeadTable() {
     </Paper>
   );
 }
+
+export default Main

@@ -11,12 +11,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
+import { useNotification } from '../../contexts/NotificationContext';
+import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../configs/Constants';
+
+
 const defaultTheme = createTheme();
 
 const Login: React.FC = () => {
   const [errors, setErrors] = useState({ username: false, password: false });
+  const showNotification = useNotification();
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const username = data.get('username');
@@ -28,8 +35,29 @@ const Login: React.FC = () => {
     });
 
     if (username && password) {
-      // Form submission logic here
-      console.log({ username, password });
+      const data = {
+        username: username,
+        password: password,
+      };
+      try {
+        const fetching = await fetch(BASE_URL + '/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        if (!fetching.ok) {
+          throw new Error('Error login user');
+        }
+        const response = await fetching.json();
+        localStorage.setItem('token', response.data);
+
+        showNotification('success', 'Logged in', 'Login successful!');
+        navigate('/');
+      } catch (error) {
+        showNotification('error', 'Login Error', 'Login information is wrong');
+      }
     }
   };
 
@@ -86,7 +114,10 @@ const Login: React.FC = () => {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link 
+                  variant="body2"
+                  onClick={() => navigate('/register')}
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

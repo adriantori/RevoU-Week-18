@@ -8,16 +8,16 @@ const useTokenChecker = (token: string | null) => {
   const showNotification = useNotification();
   const navigate = useNavigate();
 
-  const checkToken = useCallback(() => {
+  const checkToken = useCallback((token: string) => {
     if (!token) {
       showNotification('warning', 'Unauthorized', 'Lu debt collector mana bro?');
       navigate('/login');
     }
-  }, [token, showNotification, navigate]);
+  }, [showNotification, navigate]);
 
   useEffect(() => {
-    checkToken();
-  }, [checkToken]);
+    checkToken(token!);
+  }, [checkToken, token]);
 };
 
 export default useTokenChecker;

@@ -1,12 +1,13 @@
 import { ReactNode, createContext, useState, Dispatch, SetStateAction } from 'react';
 
 interface CategoryData {
-    key: string;
-    id: string;
+    key: number;
+    id: number;
+    name: string;
     task: string;
     priority: string;
     amount: number;
-    due: Date;
+    due: string;
 }
 
 interface ContextProps {
