@@ -239,7 +239,7 @@ const Main: React.FC = () => {
                               : column.id === 'priority'
                                 ? row.priority
                                 : column.id === 'amount'
-                                  ? row.amount
+                                  ? `Rp. ${row.amount.toLocaleString()}`
                                   : column.id === 'due'
                                     ? row.due
                                     : ''

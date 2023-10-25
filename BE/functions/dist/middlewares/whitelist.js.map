@@ -1,0 +1,1 @@
+{"version":3,"file":"whitelist.js","sourceRoot":"","sources":["../../src/middlewares/whitelist.ts"],"names":[],"mappings":";;AACA,MAAM,SAAS,GAAI;IACf,mBAAmB,EAAG;QAClB,MAAM,EAAE,CAAC,+BAA+B,EAAC,uBAAuB,CAAC;QACjE,OAAO,EAAC,CAAC,KAAK,EAAC,MAAM,EAAC,KAAK,EAAC,QAAQ,EAAE,OAAO,CAAC;QAC9C,cAAc,EAAE,CAAC,eAAe,EAAE,cAAc,CAAC;KACpD;CACJ,CAAA;AAED,kBAAe,SAAS,CAAA"}
