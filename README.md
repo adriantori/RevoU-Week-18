@@ -74,6 +74,8 @@ app.use(helmet.xssFilter());
 app.use(helmet.noSniff());
 ```
 
+it essentially gives me A grade on [Security Header](https://securityheaders.com) checker.
+
 my Home page header for example:
 
 ```javascript
@@ -135,7 +137,6 @@ X-Permitted-Cross-Domain-Policies:
 none
 X-Xss-Protection:
 0
-
 ```
 
 ## Front-End Explanations
@@ -143,3 +144,9 @@ X-Xss-Protection:
 I used [Material UI](https://mui.com) for my UI Library. why? because I want it.
 
 Honesty, there's not much to explain here for now, because I used very simple site similar to Week 13 project, with addition of DatePicker from MUI for Due Date.
+
+As for security, I got A on [Security Header](https://securityheaders.com), but I'm not gonna screenshot it here because im WAY too lazy. Just trust me on this, bro.
+
+## API Explanation
+
+I made separate API.md to explain the Endpoint, so feel free to check that out. or just Import 
